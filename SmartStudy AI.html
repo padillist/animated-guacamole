@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>SmartStudy AI</title>
+
+<style>
+
+body{
+font-family: 'Segoe UI', sans-serif;
+background: linear-gradient(135deg,#5f9cff,#8fd3ff);
+margin:0;
+}
+
+header{
+background:#1e2a38;
+color:white;
+padding:15px;
+text-align:center;
+font-size:22px;
+}
+
+.container{
+display:flex;
+height:100vh;
+}
+
+.sidebar{
+width:250px;
+background:#1f2f46;
+color:white;
+padding:20px;
+}
+
+.sidebar h3{
+margin-top:0;
+}
+
+.sidebar li{
+list-style:none;
+padding:12px;
+margin:8px 0;
+background:#2f4668;
+border-radius:8px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.sidebar li:hover{
+background:#1abc9c;
+transform:scale(1.05);
+}
+
+.temas{
+display:none;
+margin-left:15px;
+}
+
+.temas li{
+background:#3c5a86;
+font-size:14px;
+}
+
+.content{
+flex:1;
+padding:25px;
+}
+
+.card{
+background:white;
+border-radius:12px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 10px 20px rgba(0,0,0,0.1);
+}
+
+.materia{
+display:none;
+}
+
+ul{
+padding-left:20px;
+}
+
+li{
+margin:8px 0;
+}
+
+.chatbox{
+height:260px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:10px;
+padding:10px;
+background:#f9f9f9;
+margin-bottom:10px;
+}
+
+.user{
+color:#0066ff;
+}
+
+.bot{
+color:#27ae60;
+}
+
+input{
+width:70%;
+padding:12px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px 18px;
+border:none;
+border-radius:10px;
+background:linear-gradient(45deg,#27ae60,#2ecc71);
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+background:linear-gradient(45deg,#2ecc71,#1abc9c);
+}
+
+button:active{
+transform:scale(0.95);
+}
+
+/* NUEVO: barra de progreso */
+
+.progreso{
+height:10px;
+background:#ddd;
+border-radius:20px;
+margin-top:10px;
+}
+
+.barra{
+height:10px;
+width:0%;
+background:#27ae60;
+border-radius:20px;
+transition:1s;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+SmartStudy AI – Asistente Inteligente de Estudio
+</header>
+
+<div class="container">
+
+<div class="sidebar">
+
+<h3>📚 Materias</h3>
+
+<ul>
+
+<li onclick="mostrarTemas('matematicasTemas')">➗ Matemáticas</li>
+
+<ul id="matematicasTemas" class="temas">
+<li onclick="mostrarTarea('temaTrigonometria')">Trigonometría</li>
+<li onclick="mostrarTarea('temaAlgebra')">Álgebra</li>
+</ul>
+
+<li onclick="mostrarTemas('socialesTemas')">🔬 Ciencias Sociales</li>
+
+<ul id="socialesTemas" class="temas">
+<li onclick="mostrarTarea('temaSistemaSolar')">Sistema Solar</li>
+<li onclick="mostrarTarea('temaPlanetas')">Planetas</li>
+</ul>
+
+<li onclick="mostrarTemas('temasLengua')">📖 Lengua Española</li>
+
+<ul id="temasLengua" class="temas">
+<li onclick="mostrarTarea('temaLectura')">Lectura</li>
+<li onclick="mostrarTarea('temaGramatica')">Gramática</li>
+<li onclick="mostrarTarea('temaOrtografia')">Ortografía</li>
+</ul>
+
+<li onclick="mostrarTemas('temasIngles')">🌎 Inglés</li>
+
+<ul id="temasIngles" class="temas">
+<li onclick="mostrarTarea('temaVerbos')">Verbos irregulares</li>
+<li onclick="mostrarTarea('temaVocabulario')">Vocabulario</li>
+<li onclick="mostrarTarea('temaListening')">Listening</li>
+</ul>
+
+<li onclick="mostrarTemas('temasEmprendimiento')">💼 Emprendimiento</li>
+
+<ul id="temasEmprendimiento" class="temas">
+<li onclick="mostrarTarea('temaNegocio')">Plan de negocio</li>
+<li onclick="mostrarTarea('temaMarketing')">Marketing</li>
+<li onclick="mostrarTarea('temaVentas')">Ventas</li>
+</ul>
+
+<li onclick="mostrarTemas('temasCableado')">🔌 Cableado Estructurado</li>
+
+<ul id="temasCableado" class="temas">
+<li onclick="mostrarTarea('temaRedes')">Instalación de redes</li>
+<li onclick="mostrarTarea('temaCables')">Tipos de cables</li>
+<li onclick="mostrarTarea('temaTopologia')">Topología de red</li>
+</ul>
+
+<li onclick="mostrarTemas('temasDomotica')">🏠 Seguridad Domótica</li>
+
+<ul id="temasDomotica" class="temas">
+<li onclick="mostrarTarea('temaAlarmas')">Sistemas de alarma</li>
+<li onclick="mostrarTarea('temaCamaras')">Cámaras de seguridad</li>
+<li onclick="mostrarTarea('temaSensores')">Sensores inteligentes</li>
+</ul>
+
+</ul>
+
+</div>
+
+<div class="content">
+
+<div class="card">
+
+<h2>📌 Tareas</h2>
+
+<div id="Matemáticas" class="materia">
+
+<h3>Matemáticas</h3>
+
+<ul>
+
+<li>Resolver ejercicios página 45 <button onclick="completar()">✔</button></li>
+
+<li>Estudiar ecuaciones <button onclick="completar()">✔</button></li>
+
+</ul>
+
+</div>
+
+<div id="temaTrigonometria" class="materia">
+
+<h3>Trigonometría</h3>
+
+<ul>
+<li>Resolver ejercicios página 45 <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaAlgebra" class="materia">
+
+<h3>Álgebra</h3>
+
+<ul>
+<li>Estudiar ecuaciones <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="Ciencias Sociales" class="materia">
+
+<h3>Ciencias Sociales</h3>
+
+<ul>
+
+<li>Resumen del sistema solar <button onclick="completar()">✔</button></li>
+
+<li>Estudiar los planetas <button onclick="completar()">✔</button></li>
+
+</ul>
+
+</div>
+
+<div id="temaSistemaSolar" class="materia">
+
+<h3>Sistema Solar</h3>
+
+<ul>
+<li>Resumen del sistema solar <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaPlanetas" class="materia">
+
+<h3>Planetas</h3>
+
+<ul>
+<li>Estudiar los planetas <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaLectura" class="materia">
+
+<h3>Lectura</h3>
+
+<ul>
+<li>Leer capítulo 4 del libro de literatura <button onclick="completar()">✔</button></li>
+<li>Hacer un resumen de la lectura <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaGramatica" class="materia">
+
+<h3>Gramática</h3>
+
+<ul>
+<li>Estudiar sustantivos y verbos <button onclick="completar()">✔</button></li>
+<li>Realizar ejercicios de gramática página 32 <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaOrtografia" class="materia">
+
+<h3>Ortografía</h3>
+
+<ul>
+<li>Practicar uso de la tilde <button onclick="completar()">✔</button></li>
+<li>Corregir palabras mal escritas <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaVerbos" class="materia">
+
+<h3>Verbos irregulares</h3>
+
+<ul>
+<li>Memorizar 20 verbos irregulares <button onclick="completar()">✔</button></li>
+<li>Practicar pronunciación <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaVocabulario" class="materia">
+
+<h3>Vocabulario</h3>
+
+<ul>
+<li>Aprender 15 palabras nuevas <button onclick="completar()">✔</button></li>
+<li>Usarlas en una oración <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaListening" class="materia">
+
+<h3>Listening</h3>
+
+<ul>
+<li>Escuchar audio de práctica <button onclick="completar()">✔</button></li>
+<li>Responder preguntas del audio <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaNegocio" class="materia">
+
+<h3>Plan de negocio</h3>
+
+<ul>
+<li>Crear idea de negocio <button onclick="completar()">✔</button></li>
+<li>Escribir objetivos del negocio <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaMarketing" class="materia">
+
+<h3>Marketing</h3>
+
+<ul>
+<li>Investigar estrategias de marketing <button onclick="completar()">✔</button></li>
+<li>Diseñar una estrategia de publicidad <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaVentas" class="materia">
+
+<h3>Ventas</h3>
+
+<ul>
+<li>Estudiar técnicas de venta <button onclick="completar()">✔</button></li>
+<li>Crear una simulación de venta <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaRedes" class="materia">
+
+<h3>Instalación de redes</h3>
+
+<ul>
+<li>Practicar instalación de cable de red <button onclick="completar()">✔</button></li>
+<li>Identificar puertos de red <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaCables" class="materia">
+
+<h3>Tipos de cables</h3>
+
+<ul>
+<li>Investigar cables UTP y fibra óptica <button onclick="completar()">✔</button></li>
+<li>Identificar cada tipo de cable <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaTopologia" class="materia">
+
+<h3>Topología de red</h3>
+
+<ul>
+<li>Estudiar topología estrella <button onclick="completar()">✔</button></li>
+<li>Dibujar un esquema de red <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<div id="temaAlarmas" class="materia">
+
+<h3>Sistemas de alarma</h3>
+
+<ul>
+<li>Investigar tipos de alarmas <button onclick="completar()">✔</button></li>
+<li>Explicar cómo funcionan <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaCamaras" class="materia">
+
+<h3>Cámaras de seguridad</h3>
+
+<ul>
+<li>Investigar tipos de cámaras <button onclick="completar()">✔</button></li>
+<li>Explicar su instalación <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+
+<div id="temaSensores" class="materia">
+
+<h3>Sensores inteligentes</h3>
+
+<ul>
+<li>Estudiar sensores de movimiento <button onclick="completar()">✔</button></li>
+<li>Explicar cómo funcionan <button onclick="completar()">✔</button></li>
+</ul>
+
+</div>
+
+<h3>📊 Progreso</h3>
+
+<div class="progreso">
+<div id="barra" class="barra"></div>
+</div>
+
+</div>
+
+<div id="temaTrigonometria" class="materia">
+
+<h3>Trigonometría</h3>
+
+<ul>
+<li>Resolver ejercicios página 45</li>
+</ul>
+
+</div>
+
+
+<div id="temaAlgebra" class="materia">
+
+<h3>Álgebra</h3>
+
+<ul>
+<li>Estudiar ecuaciones</li>
+</ul>
+
+</div>
+
+
+<div id="temaSistemaSolar" class="materia">
+
+<h3>Sistema Solar</h3>
+
+<ul>
+<li>Resumen del sistema solar</li>
+</ul>
+
+</div>
+
+
+<div id="temaPlanetas" class="materia">
+
+<h3>Planetas</h3>
+
+<ul>
+<li>Estudiar los planetas</li>
+</ul>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Chat con SmartStudy AI🐱‍👤</h2>
+
+<div class="chatbox" id="chat"></div>
+
+<input id="pregunta" placeholder="Escribe tu pregunta...">
+
+<button onclick="responder()">Enviar</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let tareasCompletadas=0;
+
+function completar(){
+
+tareasCompletadas++;
+
+let progreso=(tareasCompletadas/10)*100;
+
+document.getElementById("barra").style.width=progreso+"%";
+
+}
+
+function mostrarTemas(id){
+
+let temas=document.querySelectorAll(".temas");
+
+temas.forEach(t=>{
+
+if(t.id!=id){
+
+t.style.display="none";
+
+}
+
+});
+
+let menu=document.getElementById(id);
+
+if(menu.style.display=="block"){
+
+menu.style.display="none";
+
+}else{
+
+menu.style.display="block";
+
+}
+
+}
+
+function mostrarTarea(id){
+
+let tareas=document.querySelectorAll(".materia");
+
+tareas.forEach(t=>{
+
+t.style.display="none";
+
+});
+
+document.getElementById(id).style.display="block";
+
+}
+
+function mostrarMateria(nombre){
+
+let materias=document.querySelectorAll(".materia");
+
+materias.forEach(m=>{
+
+m.style.display="none";
+
+});
+
+document.getElementById(nombre).style.display="block";
+
+}
+
+function responder(){
+
+let input=document.getElementById("pregunta");
+
+let chat=document.getElementById("chat");
+
+let pregunta=input.value.toLowerCase();
+
+chat.innerHTML+="<p class='user'><b>Tú:</b> "+pregunta+"</p>";
+
+chat.innerHTML+="<p class='bot'>SmartStudy AI está pensando...</p>";
+
+setTimeout(function(){
+
+let respuesta="No estoy seguro, pero revisa tus apuntes o consulta a tu profesor.";
+
+if(pregunta.includes("hola")){
+
+respuesta="¡Hola! Soy SmartStudy AI. Estoy aquí para ayudarte a estudiar.";
+
+}
+
+else if(pregunta.includes("que es la trigonometría")){
+
+respuesta="Es la rama de las matemáticas que estudia los angulos y sus relaciones entre los lados de los triángulos.";
+
+}
+
+else if(pregunta.includes("que es la matematica financiera")){
+
+respuesta="Es la parte de las matematicas que estudia el manejo del dinero, como préstamos, intereses y amortizaciones.";
+
+}
+
+else if(pregunta.includes("Que es un numero entero")){
+
+respuesta="Un número entero es un número sin decimales, puede ser positivo, negativo o cero. Ejemplos: -3, 0, 5.";
+
+}
+
+else if(pregunta.includes("que es una fracción")){
+respuesta="Una fracción es una forma de representar una parte de un todo, compuesta por un numerador y un denominador.";
+
+}
+
+else if(pregunta.includes("que es la algebra")){
+respuesta="La álgebra es una rama de las matemáticas que utiliza símbolos para representar números y quantities, y estudia las reglas de los operadores y las relaciones entre ellos.";
+
+}
+
+else if(pregunta.includes("que es una ecuacion")){
+respuesta="Una ecuación es una igualdad matemática que contiene una o más variables, y se resuelve para encontrar el valor de esas variables.";
+
+}
+
+else if(pregunta.includes("que es la geometria")){
+respuesta="La geometría es la rama de las matemáticas que estudia las propiedades y relaciones de las figuras geométricas en el espacio.";
+
+}
+
+else if(pregunta.includes("que es un angulo")){
+respuesta="Un ángulo es la figura geométrica formada por dos rayos que parten de un mismo punto, llamado vértice.";
+
+}
+
+else if(pregunta.includes("que es una funcion")){
+respuesta="Una función es una relación matemática que asigna a cada elemento de un conjunto de entrada exactamente un elemento de un conjunto de salida.";
+
+}
+
+else if(pregunta.includes("que es la estadistica")){
+respuesta="La estadística es la rama de las matemáticas que se encarga de recopilar, analizar e interpretar datos para tomar decisiones informadas.";
+
+}
+
+else if(pregunta.includes("que es un sustantivo")){
+
+respuesta="Un sustantivo es una palabra que se usa para nombrar a una persona, animal, lugar o cosa.";
+
+}
+
+else if(pregunta.includes("que es un verbo")){  
+respuesta="Un verbo es una palabra que expresa una acción, un estado o un proceso.";
+
+}
+
+else if(pregunta.includes("que es un sinonimo")){
+respuesta="Un sinónimo es una palabra que tiene un significado similar o equivalente a otra palabra.";
+
+}
+
+else if(pregunta.includes("que es un antonimo")){
+respuesta="Un antónimo es una palabra que tiene un significado opuesto o contrario a otra palabra.";
+}
+else if(pregunta.includes("que es una oración")){
+respuesta="Una oración es un conjunto de palabras que expresan una idea completa, generalmente formada por un sujeto y un predicado.";
+
+}
+
+else if(pregunta.includes("que es un sujeto")){
+respuesta="El sujeto es la parte de la oración que realiza la acción o de quien se habla.";
+
+}
+
+else if(pregunta.includes("que es un predicado")){
+respuesta="El predicado es la parte de la oración que expresa lo que se dice del sujeto, generalmente contiene el verbo y sus complementos.";
+
+}
+
+else if(pregunta.includes("que es un parrafo")){
+respuesta="Un párrafo es un conjunto de oraciones que desarrollan una idea principal dentro de un texto.";
+
+}
+
+else if(pregunta.includes("que es la tilde")){
+respuesta="La tilde es un signo gráfico que se coloca sobre una vocal para indicar la sílaba tónica o para diferenciar palabras homónimas.";
+
+}
+
+else if(pregunta.includes("Qué es la geografía")){
+respuesta="La geografía es la ciencia que estudia la superficie terrestre, sus características físicas, humanas y las interacciones entre ellas.";
+
+}
+
+else if(pregunta.includes("que es la historia")){
+respuesta="La historia es la disciplina que estudia los acontecimientos pasados de la humanidad, analizando sus causas y consecuencias.";
+
+}
+
+else if(pregunta.includes("que es un continente")){
+respuesta="Un continente es una gran extensión de tierra que se distingue por sus características geográficas, culturales e históricas. Ejemplos: América, Europa, Asia.";
+
+}
+
+else if(pregunta.includes("que es un pais")){
+respuesta="Un país es una nación con su propio gobierno, territorio y población. Ejemplos: México, España, Argentina.";
+
+}
+
+else if(pregunta.includes("cuáantos continentes hay")){
+respuesta="Hay siete continentes: África, América, Antártida, Asia, Europa, Oceanía y América del Sur.";
+
+}
+
+else if(pregunta.includes("que es la población")){
+respuesta="La población es el conjunto de personas que habitan en un lugar determinado, como un país o una ciudad.";
+
+}
+
+else if(pregunta.includes("que es el clima")){
+respuesta="El clima es el conjunto de condiciones atmosféricas que caracterizan a una región durante un período prolongado, incluyendo temperatura, humedad, viento y precipitaciones.";
+
+}
+
+else if(pregunta.includes("que es la cultura")){
+respuesta="La cultura es el conjunto de conocimientos, creencias, costumbres, artes y todas las manifestaciones humanas que caracterizan a un grupo social o a una sociedad en particular.";
+
+}
+
+else if(pregunta.includes("que es la economía")){
+respuesta="La economía es la ciencia social que estudia la producción, distribución y consumo de bienes y servicios, así como la gestión de los recursos para satisfacer las necesidades humanas.";
+
+}
+
+function mostrarTemas(id){
+
+let temas=document.querySelectorAll(".temas");
+
+temas.forEach(t=>{
+
+if(t.id!=id){
+
+t.style.display="none";
+
+}
+
+});
+
+let menu=document.getElementById(id);
+
+if(menu.style.display=="block"){
+
+menu.style.display="none";
+
+}else{
+
+menu.style.display="block";
+
+}
+
+}
+
+function mostrarTarea(id){
+
+let tareas=document.querySelectorAll(".materia");
+
+tareas.forEach(t=>{
+
+t.style.display="none";
+
+});
+
+document.getElementById(id).style.display="block";
+
+}
+
+
+
+chat.innerHTML+="<p class='bot'><b>SmartStudy AI:</b> "+respuesta+"</p>";
+
+chat.scrollTop=chat.scrollHeight;
+
+},1000);
+
+input.value="";
+
+}
+
+</script>
+
+</body>
+</html>
